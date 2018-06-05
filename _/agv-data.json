@@ -1,0 +1,143 @@
+[
+  {
+    "key": "Group: LC_female",
+    "color": "#008837",
+    "isGroup": true,
+    "values": [
+      {
+        "xMin": 22,
+        "xMax": 788,
+        "xStdDev": 236,
+        "yMin": 22,
+        "yMax": 100,
+        "yStdDev": 22,
+        "values": [
+          {
+            "x": 475,
+            "y": 62,
+            "label": "LC_217"
+          },
+          {
+            "x": 278,
+            "y": 55,
+            "label": "LC_217"
+          },
+          {
+            "x": 788,
+            "y": 79,
+            "label": "LC_217"
+          },
+          {
+            "x": 514,
+            "y": 72,
+            "label": "LC_217"
+          },
+          {
+            "x": 482,
+            "y": 77,
+            "label": "LC_217"
+          },
+          {
+            "x": 437,
+            "y": 83,
+            "label": "LC_217"
+          },
+          {
+            "x": 481,
+            "y": 77,
+            "label": "LC_217"
+          }
+        ],
+        "x": 359,
+        "y": 74,
+        "label": "LC_217"
+      },
+      {
+        "xMin": 67,
+        "xMax": 67,
+        "yMin": 51,
+        "yMax": 51,
+        "values": [
+          {
+            "x": 67,
+            "y": 51,
+            "label": "LC_314"
+          }
+        ],
+        "x": 67,
+        "y": 51,
+        "label": "LC_314"
+      },
+      {
+        "xMin": 95,
+        "xMax": 458,
+        "xStdDev": 170,
+        "yMin": 72,
+        "yMax": 100,
+        "yStdDev": 12,
+        "values": [
+          {
+            "x": 425,
+            "y": 91,
+            "label": "LC_315"
+          },
+          {
+            "x": 458,
+            "y": 82,
+            "label": "LC_315"
+          }
+        ],
+        "x": 348,
+        "y": 86,
+        "label": "LC_315"
+      },
+      {
+        "xMin": 510,
+        "xMax": 519,
+        "xStdDev": 6,
+        "yMin": 83,
+        "yMax": 88,
+        "yStdDev": 4,
+        "values": [
+          {
+            "x": 519,
+            "y": 88,
+            "label": "LC_310"
+          },
+          {
+            "x": 510,
+            "y": 83,
+            "label": "LC_310"
+          }
+        ],
+        "x": 515,
+        "y": 86,
+        "label": "LC_310"
+      }
+    ]
+  },
+  {
+    "key": "Individual: BC_44",
+    "color": "#7b3294",
+    "isGroup": false,
+    "x": 300,
+    "y": 40,
+    "xMin": 22,
+    "xMax": 788,
+    "xStdDev": 236,
+    "yMin": 22,
+    "yMax": 100,
+    "yStdDev": 22,
+    "values": [
+      {
+        "x": 592, "y": 85, "label": "BC_44", "series": 0
+      },
+      {
+        "x": 496, "y": 91, "label": "BC_44", "series": 0
+      },
+      {
+        "x": 252, "y": 10, "label": "BC_44", "series": 0
+      }
+    ]
+  }
+]
