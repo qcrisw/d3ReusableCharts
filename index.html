@@ -13,10 +13,12 @@
     <div id="chart-id" class="scatter-plot"></div>
     <script src="scatterplot.js"></script>
     <script>
-    file = '_/agv-data.json';
+    file = '_/agv-scplot-data.json';
     chartWrapper = 'body';
     chartId = '#chart-id';
-    Scatterplot(file, chartWrapper, chartId);
+    xAxisLabel = "X AXIS";
+    yAxisLabel = "Y AXIS";
+    Scatterplot(file, chartWrapper, chartId, xAxisLabel, yAxisLabel);
 </script>
 </body>
 

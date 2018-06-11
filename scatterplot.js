@@ -1,5 +1,5 @@
 
-function Scatterplot(dataFile, chartWrapper, chartId) {
+function Scatterplot(dataFile, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
     var parentNode = d3.select(chartWrapper).node(),
         parent = chartId;
     const margin = { left: 70, right: 10, top: 10, bottom: 120 };
@@ -21,9 +21,9 @@ function Scatterplot(dataFile, chartWrapper, chartId) {
 
     var format = d3.format(".2s");
     const xValue = d => d.x;
-    const xLabel = 'xLabel';
+    const xLabel = xAxisLabel;
     const yValue = d => d.y;
-    const yLabel = 'yLabel';
+    const yLabel = yAxisLabel;
 
 	  //grid lines
 		const xScale = d3.scaleLinear();
