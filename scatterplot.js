@@ -1,5 +1,5 @@
 
-function Scatterplot(dataFile, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
+function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
     var parentNode = d3.select(chartWrapper).node(),
         parent = chartId;
     const margin = { left: 70, right: 10, top: 10, bottom: 120 };
@@ -64,8 +64,8 @@ function Scatterplot(dataFile, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
 
     var dataCirclesG = g.append('g').attr("class", "data-points");
 
-  d3.json(dataFile, function(error, data) {
-    if (error) throw error;
+  //d3.json(dataFile, function(error, data) {
+  //  if (error) throw error; 
     data.forEach(function(d) {
      d.enabled = true;  // for legend toggling
    });
@@ -352,5 +352,5 @@ function Scatterplot(dataFile, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
         drawScatterplot(newData, xScale, yScale, yScale2);
       });
 
-  });
+//  });
  }
