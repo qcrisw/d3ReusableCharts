@@ -65,7 +65,7 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
     var dataCirclesG = g.append('g').attr("class", "data-points");
 
   //d3.json(dataFile, function(error, data) {
-  //  if (error) throw error; 
+  //  if (error) throw error;
     data.forEach(function(d) {
      d.enabled = true;  // for legend toggling
    });
@@ -260,10 +260,10 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
         var dataUnGrouped = [];
         data.forEach(function(d){
           // for Individuals
-          if(d.isGroup == false){
+          if(d.group == false){
             dataUnGrouped.push({
              "enabled": d.enabled,
-             "isGroup": d.isGroup,
+             "group": d.group,
              "key": d.key,
              "color": d.color,
              "values": d.values,
@@ -281,11 +281,11 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
               })
             }
           // for Groups
-          else if(d.isGroup == true){
+          else if(d.group == true){
             d.values.forEach(function(e) {
             dataUnGrouped.push({
             "enabled": d.enabled,
-            "isGroup": d.isGroup,
+            "group": d.group,
             "key": d.key,
             "color": d.color,
             "x": e.x,
@@ -312,7 +312,7 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
         var allX = [];
         var allY = [];
         for(i in data) {
-          if(data[i].isGroup == true){
+          if(data[i].group == true){
             for(j in data[i].values) {
               allX.push(data[i].values[j].xMax)
               allY.push(data[i].values[j].yMax)
