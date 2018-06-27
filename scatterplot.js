@@ -348,7 +348,23 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
 
         xAxisG.call(xAxis);
         yAxisG.call(yAxis);
+        d3.select('.xAxisG>text').remove();
+        d3.select('.yAxisG>text').remove();
+        d3.select('data-points').remove();
+
         d3.selectAll('circle').remove();
+        xAxisG.append('text')
+            .attr('class', 'axis-label')
+            .attr('x', width / 2)
+            .attr('y', 45)
+            .text(xLabel);
+        yAxisG.append('text')
+            .attr('class', 'axis-label')
+            .attr('x', -height / 2)
+            .attr('y', -55)
+            .attr('transform', `rotate(-90)`)
+            .style('text-anchor', 'middle')
+            .text(yLabel);
         drawScatterplot(newData, xScale, yScale, yScale2);
       });
 
