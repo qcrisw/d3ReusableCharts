@@ -19,13 +19,17 @@
 
 .scatter-plot {
   width: 800px;
-  height: 500px;
+  height: 500px !important;
+}
+
+.stacked-bar {
+  width: 800px;
+  height: 500px !important;
 }
 
 .hidden {
   display:none;
 }
-
 
 ul li {
   display: inline-block;
@@ -41,8 +45,8 @@ ul li {
   border-radius:50%;
   opacity: 0.8;
   }
-span.color-circle:active {
-  opacity: 1;
+li > span.color-circle:focus {
+  fill: #f00;
   }
 
   .d3-tooltip {
