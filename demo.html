@@ -9,36 +9,73 @@
     <link href="d3-style.css" rel="stylesheet"></link>
   </head>
   <body>
+
+    <script type="text/javascript" src="scatterplot.js"></script>
+    <script type="text/javascript" src="dummyData.js"></script>
+    <script type="text/javascript" src="barChart.js"></script>
+    <script type="text/javascript" src="normalizedStackBarChart.js"></script>
+    <script type="text/javascript" src="stackedBarchart.js"></script>
+    <script type="text/javascript" src="violinplot.js"></script>
+
+
     <div class="chart1">
+      <h3 align="center">Scatterplot</h3>
       <div id="scatter-plot">
       <ul class="legend" align="right"></ul></div>
     </div>
 
     <div class="chart2">
+      <h3 align="center">Grouped Bar (Histogram)</h3>
       <div id="grouped-barchart">
       <ul class="legend" align="right"></ul></div>
     </div>
 
+    <div class="chart3">
+      <h3 align="center">Stacked Bar</h3>
+      <div id="stacked-barchart">
+      <ul class="legend" align="right"></ul></div>
+    </div>
 
-    <script type="text/javascript" src="scatterplot.js"></script>
-    <script type="text/javascript" src="dummyData.js"></script>
-    <script type="text/javascript" src="barChart.js"></script>
+    <div class="chart4">
+      <h3 align="center">Normalized Stack Bar</h3>
+      <div id="stacked100-barchart">
+      <ul class="legend" align="right"></ul></div>
+    </div>
+
     <script>
 
     chartWrapper = 'div.chart1';
     chartId = '#scatter-plot';
     xAxisLabel = "X AXIS";
     yAxisLabel = "Y AXIS";
-    //  scatterplot_grp_indv variable contains bummydata for scatter plot from dummyData.js
+
+    //  calling variables that contain dummydata for charts from dummyData.js
     Scatterplot(scatterplot_grp_indv, chartWrapper, chartId, xAxisLabel, yAxisLabel);
 
-    var grp_bardata = [{"categorie":"Student","values":[{"value":0,"rate":"Not at all"},{"value":4,"rate":"Not very much"},{"value":12,"rate":"Medium"},{"value":6,"rate":"Very much"},{"value":0,"rate":"Tremendously"}]},{"categorie":"Liberal Profession","values":[{"value":1,"rate":"Not at all"},{"value":21,"rate":"Not very much"},{"value":13,"rate":"Medium"},{"value":18,"rate":"Very much"},{"value":6,"rate":"Tremendously"}]},{"categorie":"Salaried Staff","values":[{"value":3,"rate":"Not at all"},{"value":22,"rate":"Not very much"},{"value":6,"rate":"Medium"},{"value":15,"rate":"Very much"},{"value":3,"rate":"Tremendously"}]},{"categorie":"Employee","values":[{"value":12,"rate":"Not at all"},{"value":7,"rate":"Not very much"},{"value":18,"rate":"Medium"},{"value":13,"rate":"Very much"},{"value":6,"rate":"Tremendously"}]},{"categorie":"Craftsman","values":[{"value":6,"rate":"Not at all"},{"value":15,"rate":"Not very much"},{"value":9,"rate":"Medium"},{"value":12,"rate":"Very much"},{"value":3,"rate":"Tremendously"}]},{"categorie":"Inactive","values":[{"value":6,"rate":"Not at all"},{"value":6,"rate":"Not very much"},{"value":6,"rate":"Medium"},{"value":2,"rate":"Very much"},{"value":3,"rate":"Tremendously"}]}];
+    chartWrapper2 = 'div.chart2';
+    chartId2 = '#grouped-barchart';
+    GroupedBarChart(histogram_y_indv_grp_convertedData, chartWrapper2, chartId2, xAxisLabel, yAxisLabel);
 
-    chartWrapper = 'div.chart2';
-    chartId = '#grouped-barchart';
-    GroupedBarChart(histogram_y_indv_grp_convertedData, chartWrapper, chartId, xAxisLabel, yAxisLabel);
+    chartWrapper3 = 'div.chart3';
+    chartId3 = '#stacked-barchart';
+    StackedBarChart(stackedbar_grp, chartWrapper3, chartId3, xAxisLabel, yAxisLabel);
+
+    chartWrapper4 = 'div.chart4';
+    chartId4 = '#stacked100-barchart';
+    NormalizedStackBarChart(full_stackedbar_wd_indv, chartWrapper4, chartId4, xAxisLabel, yAxisLabel);
 
 </script>
+
+<div class="chart5">
+  <div id="violinplot">
+  <ul class="legend" align="right"></ul></div>
+  <script type="text/javascript">
+    // violinChart(violin_grp_indv);
+  </script>
+</div>
+
+
+
 </body>
 
 

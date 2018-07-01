@@ -25,7 +25,7 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
     //  Create tooltip
     var tooltip = d3.select(parent)
     .append('div')
-    .attr('class', 'd3-tooltip hidden');
+    .attr('class', 'd3-scatterplot-tooltip hidden');
 
     // Create Chart Axis values, axis labels and scales
     var xValue = d => d.x;
@@ -35,8 +35,10 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
     var yLabel = yAxisLabel;
 		var yScale = d3.scaleLinear();
 
+
     //  Create groups for x and y axis labels
-    var xAxisG = g.append('g')
+    var axisSelection = "div"+parent+">svg>g";
+    var xAxisG = d3.select(axisSelection).append('g')
         .attr('transform', `translate(0, ${height})`)
         .attr("class", "xAxisG");
         xAxisG.append('text')
@@ -44,7 +46,7 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
         .attr('x', width / 2)
         .attr('y', 45)
         .text(xLabel);
-    var yAxisG = g.append('g')
+    var yAxisG = d3.select(axisSelection).append('g')
         .attr("class", "yAxisG");
         yAxisG.append('text')
         .attr('class', 'axis-label')
@@ -128,9 +130,10 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
 
         xAxisG.call(xAxis);
         yAxisG.call(yAxis);
-        d3.select('.xAxisG>text').remove();
-        d3.select('.yAxisG>text').remove();
-        d3.select('data-points').remove();
+        d3.select(axisSelection+'>g.xAxisG>text').remove();
+        d3.select(axisSelection+'>g.yAxisG>text').remove();
+        d3.select('data-points-grp').remove();
+        d3.select('data-points-indv').remove();
 
         d3.selectAll('circle').remove();
         xAxisG.append('text')
@@ -261,7 +264,7 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
 
       // exit the whole group before adding points
       dataCirclesG.exit().remove();
-
+      dataCirclesI.exit().remove();
       // seperate jsonData as group and individual
       var dataGrp = [], dataIndv = [];
       jsonData.forEach(function(d){
@@ -301,8 +304,9 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
               d3ScatterplotMouseOver(d, xScale, yScale, yScale2);
           })
       .on("mouseout", function(d) {
+            var rectSelection = "div"+parent+">svg>g>rect"
             tooltip.classed('hidden', true);
-            d3.selectAll('rect').remove();
+            d3.selectAll(rectSelection).remove();
         })
       .on("click", function(d) {
             d3ScatterplotClick(d);

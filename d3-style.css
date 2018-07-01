@@ -17,15 +17,11 @@
   font: normal 14px sans-serif !important;
 }
 
-#scatter-plot {
+#scatter-plot, #grouped-barchart, #stacked-barchart, #stacked100-barchart {
   width: 800px;
   height: 500px !important;
 }
 
-#grouped-barchart {
-  width: 800px;
-  height: 500px !important;
-}
 
 .hidden {
   display:none;
@@ -57,7 +53,7 @@ ul.legend li {
   border: 1px solid rgba(0,0,0, 0.5);
   }
 
-  .d3-tooltip {
+  .d3-scatterplot-tooltip, .d3-grouped-barchart-tooltip {
   position:absolute;
   z-index:1000;
   background:rgb(256,256,250,0.7);
@@ -72,6 +68,8 @@ ul.legend li {
   transform:translate(0,-10%);
   pointer-events:none;
 }
+
+
 /* .legendCells {
   position: absolute;
   top: 20px;
