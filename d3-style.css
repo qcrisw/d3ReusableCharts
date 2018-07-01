@@ -22,7 +22,7 @@
   height: 500px !important;
 }
 
-.stacked-bar {
+#grouped-barchart {
   width: 800px;
   height: 500px !important;
 }
@@ -31,7 +31,7 @@
   display:none;
 }
 
-ul li {
+ul.legend li {
   display: inline-block;
   margin-left: 10px;
   font: normal 14px sans-serif !important;

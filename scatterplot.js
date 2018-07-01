@@ -8,7 +8,7 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
     // Create/Set DOM selectors, margins and chart dimensions
     var parentNode = d3.select(chartWrapper).node(),
         parent = chartId;
-    const margin = { left: 70, right: 20, top: 10, bottom: 120 };
+    var margin = { left: 70, right: 20, top: 10, bottom: 120 };
     var containerwidth = parentNode.getBoundingClientRect().width,
     containerheight = parentNode.getBoundingClientRect().height,
     width = containerwidth - margin.left - margin.right,
@@ -27,17 +27,16 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
     .append('div')
     .attr('class', 'd3-tooltip hidden');
 
-    // Create Chart Axis format, values, axis labels and scales
-    var format = d3.format(".2s");
-    const xValue = d => d.x;
-    const xLabel = xAxisLabel;
-    const xScale = d3.scaleLinear();
-    const yValue = d => d.y;
-    const yLabel = yAxisLabel;
-		const yScale = d3.scaleLinear();
+    // Create Chart Axis values, axis labels and scales
+    var xValue = d => d.x;
+    var xLabel = xAxisLabel;
+    var xScale = d3.scaleLinear();
+    var yValue = d => d.y;
+    var yLabel = yAxisLabel;
+		var yScale = d3.scaleLinear();
 
     //  Create groups for x and y axis labels
-    const xAxisG = g.append('g')
+    var xAxisG = g.append('g')
         .attr('transform', `translate(0, ${height})`)
         .attr("class", "xAxisG");
         xAxisG.append('text')
@@ -45,7 +44,7 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
         .attr('x', width / 2)
         .attr('y', 45)
         .text(xLabel);
-    const yAxisG = g.append('g')
+    var yAxisG = g.append('g')
         .attr("class", "yAxisG");
         yAxisG.append('text')
         .attr('class', 'axis-label')
@@ -55,18 +54,16 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
         .style('text-anchor', 'middle')
         .text(yLabel);
 
-		// Create d3 axis and set axis ticks padding, format and size
-    const xAxis = d3.axisBottom()
+		// Create d3 axis and set axis ticks padding and size
+    var xAxis = d3.axisBottom()
       .scale(xScale)
       .ticks(10)
       .tickPadding(15)
-      .tickFormat(function(d) {return format(d)})
       .tickSize(-height);
-    const yAxis = d3.axisLeft()
+    var yAxis = d3.axisLeft()
       .scale(yScale)
       .ticks(10)
       .tickPadding(15)
-      .tickFormat(function(d) {return format(d)})
       .tickSize(-width);
 
     // Call data and add enabled key - for legend toggling functionality
@@ -89,7 +86,7 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
       .nice();
 
     // create a second yScale for inverted height range starting 0
-    const yScale2 = d3.scaleLinear()
+    var yScale2 = d3.scaleLinear()
     .domain([0, maxXY[1]])
   	.range([0, height])
   	.nice();
@@ -213,8 +210,9 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
 
     function drawLegend(data){
       //  Generate legend based on datapoints
-      d3.selectAll(".legend>li").remove();
-      var legendItem = d3.select(".legend")
+      var legendSelection = "div"+parent+">ul.legend";
+      d3.selectAll(legendSelection+">li").remove();
+      var legendItem = d3.select(legendSelection)
         .selectAll("li")
         .data(data)
         .enter()
@@ -298,7 +296,8 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
       .style("opacity", 0.8);
 
       // Mouse events for generating tooltip, rect and individual points in groups
-      dataCirclesG.selectAll('circle').on("mouseover", function(d) {
+      dataCirclesG.selectAll('circle')
+      .on("mouseover", function(d) {
               d3ScatterplotMouseOver(d, xScale, yScale, yScale2);
           })
       .on("mouseout", function(d) {

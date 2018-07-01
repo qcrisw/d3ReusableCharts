@@ -9,19 +9,35 @@
     <link href="d3-style.css" rel="stylesheet"></link>
   </head>
   <body>
+    <div class="chart1">
+      <div id="scatter-plot">
+      <ul class="legend" align="right"></ul></div>
+    </div>
 
-    <div id="scatter-plot">
-    <ul class="legend" align="right"></ul></div>
-    <script src="scatterplot.js"></script>
+    <div class="chart2">
+      <div id="grouped-barchart">
+      <ul class="legend" align="right"></ul></div>
+    </div>
+
+
+    <script type="text/javascript" src="scatterplot.js"></script>
+    <script type="text/javascript" src="dummyData.js"></script>
+    <script type="text/javascript" src="barChart.js"></script>
     <script>
 
-    data =   [{"key":"Group: LC","color":"#008837","values":[{"x":289,"y":88,"label":"LC_135","xMin":33,"xMax":412,"xQ1":233,"xQ3":410,"yMin":82,"yMax":100,"yQ1":83,"yQ3":410,"values":[{"x":300,"y":82,"label":"LC_135"},{"x":412,"y":83,"label":"LC_135"},{"x":410,"y":87,"label":"LC_135"},{"x":33,"y":100,"label":"LC_135"}]},{"x":67,"y":51,"label":"LC_314","xMin":67,"xMax":67,"xQ1":67,"xQ3":67,"yMin":51,"yMax":51,"yQ1":51,"yQ3":67,"values":[{"x":67,"y":51,"label":"LC_314"}]},{"x":348,"y":86,"label":"LC_315","xMin":95,"xMax":458,"xQ1":334,"xQ3":433,"yMin":72,"yMax":100,"yQ1":80,"yQ3":433,"values":[{"x":425,"y":91,"label":"LC_315"},{"x":458,"y":82,"label":"LC_315"}]},{"x":515,"y":86,"label":"LC_310","xMin":510,"xMax":519,"xQ1":512,"xQ3":517,"yMin":83,"yMax":88,"yQ1":84,"yQ3":517,"values":[{"x":519,"y":88,"label":"LC_310"},{"x":510,"y":83,"label":"LC_310"}]},{"x":433,"y":72,"label":"LC_116","xMin":371,"xMax":534,"xQ1":397,"xQ3":456,"yMin":55,"yMax":87,"yQ1":63,"yQ3":456,"values":[{"x":418,"y":81,"label":"LC_116"},{"x":457,"y":87,"label":"LC_116"},{"x":416,"y":81,"label":"LC_116"},{"x":371,"y":55,"label":"LC_116"},{"x":534,"y":62,"label":"LC_116"},{"x":454,"y":64,"label":"LC_116"},{"x":378,"y":76,"label":"LC_116"}]},{"x":808,"y":97,"label":"LC_122","xMin":672,"xMax":1072,"xQ1":676,"xQ3":876,"yMin":90,"yMax":100,"yQ1":95,"yQ3":876,"values":[{"x":672,"y":90,"label":"LC_122"},{"x":1072,"y":100,"label":"LC_122"},{"x":680,"y":100,"label":"LC_122"}]},{"x":222,"y":61,"label":"LC_320","xMin":23,"xMax":551,"xQ1":85,"xQ3":286,"yMin":23,"yMax":97,"yQ1":49,"yQ3":286,"values":[{"x":450,"y":63,"label":"LC_320"},{"x":140,"y":39,"label":"LC_320"},{"x":551,"y":71,"label":"LC_320"},{"x":224,"y":83,"label":"LC_320"},{"x":59,"y":52,"label":"LC_320"}]},{"x":402,"y":90,"label":"LC_241","xMin":73,"xMax":525,"xQ1":314,"xQ3":523,"yMin":74,"yMax":95,"yQ1":90,"yQ3":523,"values":[{"x":484,"y":94,"label":"LC_241"},{"x":525,"y":95,"label":"LC_241"},{"x":314,"y":74,"label":"LC_241"},{"x":524,"y":94,"label":"LC_241"},{"x":519,"y":94,"label":"LC_241"},{"x":523,"y":90,"label":"LC_241"},{"x":497,"y":86,"label":"LC_241"},{"x":163,"y":93,"label":"LC_241"}]},{"x":359,"y":74,"label":"LC_217","xMin":22,"xMax":788,"xQ1":180,"xQ3":482,"yMin":22,"yMax":100,"yQ1":67,"yQ3":482,"values":[{"x":475,"y":62,"label":"LC_217"},{"x":278,"y":55,"label":"LC_217"},{"x":788,"y":79,"label":"LC_217"},{"x":514,"y":72,"label":"LC_217"},{"x":482,"y":77,"label":"LC_217"},{"x":437,"y":83,"label":"LC_217"},{"x":481,"y":77,"label":"LC_217"}]},{"x":333,"y":70,"label":"LC_127","xMin":25,"xMax":554,"xQ1":307,"xQ3":430,"yMin":30,"yMax":96,"yQ1":58,"yQ3":430,"values":[{"x":384,"y":82,"label":"LC_127"},{"x":307,"y":53,"label":"LC_127"},{"x":352,"y":96,"label":"LC_127"},{"x":430,"y":88,"label":"LC_127"},{"x":436,"y":66,"label":"LC_127"},{"x":554,"y":91,"label":"LC_127"},{"x":325,"y":58,"label":"LC_127"}]},{"x":263,"y":63,"label":"LC_128","xMin":56,"xMax":761,"xQ1":128,"xQ3":346,"yMin":9,"yMax":95,"yQ1":50,"yQ3":346,"values":[{"x":152,"y":53,"label":"LC_128"},{"x":387,"y":80,"label":"LC_128"},{"x":333,"y":75,"label":"LC_128"},{"x":292,"y":75,"label":"LC_128"},{"x":247,"y":56,"label":"LC_128"},{"x":443,"y":75,"label":"LC_128"},{"x":761,"y":95,"label":"LC_128"}]},{"x":238,"y":89,"label":"LC_129","xMin":17,"xMax":646,"xQ1":31,"xQ3":352,"yMin":81,"yMax":100,"yQ1":82,"yQ3":352,"values":[{"x":646,"y":82,"label":"LC_129"},{"x":36,"y":81,"label":"LC_129"}]},{"x":232,"y":75,"label":"LC_136","xMin":19,"xMax":535,"xQ1":51,"xQ3":386,"yMin":24,"yMax":100,"yQ1":74,"yQ3":386,"values":[{"x":434,"y":83,"label":"LC_136"},{"x":364,"y":79,"label":"LC_136"},{"x":198,"y":94,"label":"LC_136"},{"x":349,"y":75,"label":"LC_136"},{"x":535,"y":91,"label":"LC_136"},{"x":394,"y":79,"label":"LC_136"},{"x":437,"y":90,"label":"LC_136"}]}],"group":true},{"key":"Individual: AB_248","color":"#7b3294","values":[{"x":941,"y":94,"label":"AB_248","xMin":null,"xMax":null,"xQ1":null,"xQ3":null,"yMin":null,"yMax":null,"yQ1":null,"yQ3":null,"values":[]},{"x":533,"y":97,"label":"AB_248","xMin":null,"xMax":null,"xQ1":null,"xQ3":null,"yMin":null,"yMax":null,"yQ1":null,"yQ3":null,"values":[]},{"x":608,"y":96,"label":"AB_248","xMin":null,"xMax":null,"xQ1":null,"xQ3":null,"yMin":null,"yMax":null,"yQ1":null,"yQ3":null,"values":[]},{"x":597,"y":94,"label":"AB_248","xMin":null,"xMax":null,"xQ1":null,"xQ3":null,"yMin":null,"yMax":null,"yQ1":null,"yQ3":null,"values":[]},{"x":503,"y":97,"label":"AB_248","xMin":null,"xMax":null,"xQ1":null,"xQ3":null,"yMin":null,"yMax":null,"yQ1":null,"yQ3":null,"values":[]},{"x":819,"y":99,"label":"AB_248","xMin":null,"xMax":null,"xQ1":null,"xQ3":null,"yMin":null,"yMax":null,"yQ1":null,"yQ3":null,"values":[]},{"x":591,"y":98,"label":"AB_248","xMin":null,"xMax":null,"xQ1":null,"xQ3":null,"yMin":null,"yMax":null,"yQ1":null,"yQ3":null,"values":[]}],"group":false}];
-
-    chartWrapper = 'body';
+    chartWrapper = 'div.chart1';
     chartId = '#scatter-plot';
     xAxisLabel = "X AXIS";
     yAxisLabel = "Y AXIS";
-    Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel);
+    //  scatterplot_grp_indv variable contains bummydata for scatter plot from dummyData.js
+    Scatterplot(scatterplot_grp_indv, chartWrapper, chartId, xAxisLabel, yAxisLabel);
+
+    var grp_bardata = [{"categorie":"Student","values":[{"value":0,"rate":"Not at all"},{"value":4,"rate":"Not very much"},{"value":12,"rate":"Medium"},{"value":6,"rate":"Very much"},{"value":0,"rate":"Tremendously"}]},{"categorie":"Liberal Profession","values":[{"value":1,"rate":"Not at all"},{"value":21,"rate":"Not very much"},{"value":13,"rate":"Medium"},{"value":18,"rate":"Very much"},{"value":6,"rate":"Tremendously"}]},{"categorie":"Salaried Staff","values":[{"value":3,"rate":"Not at all"},{"value":22,"rate":"Not very much"},{"value":6,"rate":"Medium"},{"value":15,"rate":"Very much"},{"value":3,"rate":"Tremendously"}]},{"categorie":"Employee","values":[{"value":12,"rate":"Not at all"},{"value":7,"rate":"Not very much"},{"value":18,"rate":"Medium"},{"value":13,"rate":"Very much"},{"value":6,"rate":"Tremendously"}]},{"categorie":"Craftsman","values":[{"value":6,"rate":"Not at all"},{"value":15,"rate":"Not very much"},{"value":9,"rate":"Medium"},{"value":12,"rate":"Very much"},{"value":3,"rate":"Tremendously"}]},{"categorie":"Inactive","values":[{"value":6,"rate":"Not at all"},{"value":6,"rate":"Not very much"},{"value":6,"rate":"Medium"},{"value":2,"rate":"Very much"},{"value":3,"rate":"Tremendously"}]}];
+
+    chartWrapper = 'div.chart2';
+    chartId = '#grouped-barchart';
+    GroupedBarChart(histogram_y_indv_grp_convertedData, chartWrapper, chartId, xAxisLabel, yAxisLabel);
+
 </script>
 </body>
 
