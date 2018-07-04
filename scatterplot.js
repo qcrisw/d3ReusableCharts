@@ -13,7 +13,7 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
     containerheight = parentNode.getBoundingClientRect().height,
     width = containerwidth - margin.left - margin.right,
     height = containerheight - margin.top - margin.bottom;
-
+console.log(width, height);
     // Create SVG with chart dimensions
     var svg = d3.select(parent)
     .append('svg')
@@ -254,7 +254,7 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
 
       //  clear existing data points, rectangles or tooltips on svg if any
       d3.selectAll('g.data-points').remove();
-      d3.selectAll('rect').remove();
+      d3.selectAll("div"+parent+">svg>g>rect").remove();
       tooltip.classed('hidden', true);
 
       var dataCirclesG = g.append('g')
@@ -299,14 +299,14 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
       .style("opacity", 0.8);
 
       // Mouse events for generating tooltip, rect and individual points in groups
+      var hoverRectSelection = "div"+parent+">svg>g>rect";
       dataCirclesG.selectAll('circle')
       .on("mouseover", function(d) {
               d3ScatterplotMouseOver(d, xScale, yScale, yScale2);
           })
       .on("mouseout", function(d) {
-            var rectSelection = "div"+parent+">svg>g>rect"
             tooltip.classed('hidden', true);
-            d3.selectAll(rectSelection).remove();
+            d3.selectAll(hoverRectSelection).remove();
         })
       .on("click", function(d) {
             d3ScatterplotClick(d);
@@ -323,25 +323,22 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
           })
       .on("mouseout", function(d) {
             tooltip.classed('hidden', true);
-            d3.selectAll('rect').remove();
+            d3.selectAll(hoverRectSelection).remove();
         })
     }
 
     function d3ScatterplotMouseOver(d, xScale, yScale, yScale2){
         // show tooltip and rectangles on mouse hover
-        var mouse = d3.mouse(svg.node()).map(function(d) {
-            return parseInt(d);
-        });
-        var left = Math.min(containerwidth, mouse[0]+margin.left+margin.right),
-        top = Math.min(containerheight, mouse[1]+margin.top+margin.right);
+        var x = event.clientX;
+        var y = event.clientY;
         var tooltipHtml = "<p class='text-capitalize'>Subject: <b>"+d.label+"</b></p><p>"+xLabel+": <b>"+d.x+"</b></p><p>"+yLabel+": <b>"+ d.y+"</b>";
         if(d.values !=null && d.values.length >> 0){
           tooltipHtml +="<p>Group Size: <b>"+ d.values.length+"</b></p>";
         }
         tooltip.html(tooltipHtml)
         .classed('hidden', false)
-        .style('left', left + 'px')
-        .style('top', top + 'px');
+        .style('left', x + 'px')
+        .style('top', y + 'px');
 
         // Create min-max and 1st - 3rd quartile rectangles for datapoints on hover
         if(d.values != null && d.values.length >> 1){

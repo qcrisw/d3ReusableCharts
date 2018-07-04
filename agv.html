@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Activity Comparison Dashboard</title>
+
+	<script src="https://d3js.org/d3.v4.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+
+	<link href="resources/bootstrap4/css/bootstrap-select.css" rel="stylesheet" type="text/css">
+
+	<link href="d3-style.css" rel="stylesheet" type="text/css">
+
+	<link rel="stylesheet" href="resources/css/bootstrap.min.css" type="text/css"/>
+	<link rel="stylesheet" href="resources/css/style.css" >
+	<link rel="stylesheet" href="resources/css/nv.d3.min.css" type="text/css" />
+	<link rel="stylesheet" href="resources/css/font-awesome.css" type="text/css">
+	<link rel="stylesheet" href="resources/css/login.css" type="text/css">
+
+	<link rel="stylesheet" href="resources/css/nv.d3.min.css" />
+	<link rel="stylesheet" href="resources/css/font-awesome.css" type="text/css">
+
+	<script type="text/javascript" src="scatterplot.js"></script>
+	<script type="text/javascript" src="dummyData.js"></script>
+	<script type="text/javascript" src="barChart.js"></script>
+	<script type="text/javascript" src="normalizedStackBarChart.js"></script>
+	<script type="text/javascript" src="stackedBarchart.js"></script>
+	<script type="text/javascript" src="violinplot.js"></script>
+
+</head>
+<body>
+	<div class="container">
+		<div>
+			<div id="dataTablePanel" class="card mb-1">
+				<div class="card-body">
+					<div class="row">
+						<div class=col-sm-6>
+							<div class="card border-selection1 mb-2">
+								<div class="card-body">
+									<div class="svg-lg" id="activity1">
+										<svg>
+												<!-- stackbar -->
+										</svg>
+									</div>
+								</div>
+							</div>
+						</div>
+
+    <!-- ############ HISTOGRAM ################ -->
+						<div class="col-sm-12" id="xDiv">
+							<div class="card border-comparison mb-2">
+								<div class="card-body" id="chart1">
+									<div id="xChart">
+										<script>
+												chartWrapper2 = 'div.card-body#chart1';
+												chartId2 = '#xChart';
+												xAxisLabel = "X AXIS";
+												yAxisLabel = "Y AXIS";
+												GroupedBarChart(histogram_y_indv_grp_convertedData, chartWrapper2, chartId2, xAxisLabel, yAxisLabel);
+										</script>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm-12" id="xyDiv">
+							<div class="card border-comparison mb-2">
+								<div class="card-body" id="chart2">
+									<div id="xyChart">
+										<script>
+											chartWrapper = 'div.card-body#chart2';
+											chartId = '#xyChart';
+											xAxisLabel = "X AXIS";
+											yAxisLabel = "Y AXIS";
+											//  calling variables that contain dummydata for charts from dummyData.js
+											Scatterplot(scatterplot_grp_indv, chartWrapper, chartId, xAxisLabel, yAxisLabel);
+										</script>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

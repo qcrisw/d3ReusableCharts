@@ -17,7 +17,7 @@
   font: normal 14px sans-serif !important;
 }
 
-#scatter-plot, #grouped-barchart, #stacked-barchart, #stacked100-barchart {
+#xyChart, #xChart, #yChart, #scatter-plot, #grouped-barchart, #stacked-barchart, #stacked100-barchart {
   width: 800px;
   height: 500px !important;
 }
