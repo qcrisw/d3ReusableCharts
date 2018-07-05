@@ -1,6 +1,4 @@
 function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
-
-
   // Create/Set DOM selectors, margins and chart dimensions
   var parentNode = d3.select(chartWrapper).node(),
       parent = chartId;
@@ -10,6 +8,7 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   width = containerwidth - margin.left - margin.right,
   height = containerheight - margin.top - margin.bottom;
 
+  drawLegend(data);
   // Create SVG with chart dimensions
   var svg = d3.select(parent)
   .append('svg')
@@ -28,18 +27,16 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   // Create Chart Axis format, axis labels and scales
   // var format = d3.format(".2s");
   var xLabel = xAxisLabel;
-  var x0Scale = d3.scaleBand().rangeRound([0, width]).paddingInner(0.5);
-  var x1Scale = d3.scaleBand().paddingInner(0.05);
+  var x0Scale = d3.scaleBand().rangeRound([0, width]).paddingInner(0.1);
+  var x1Scale = d3.scaleBand().padding(0.05);
   var yLabel = yAxisLabel;
-  var yScale = d3.scaleLinear()
-    .rangeRound([height, 0]);
+  var yScale = d3.scaleLinear().rangeRound([height, 0]);
 
-
-  //  Create groups for x and y axis labels
+  //  Create groups in svg for x and y axis labels and add labels
   var axisSelection = "div"+parent+">svg>g";
   var xAxisG = d3.select(axisSelection).append('g')
-      .attr('transform', `translate(0, ${height})`)
-      .attr("class", "xAxisG");
+      .attr("class", "xAxisG")
+      .attr('transform', `translate(0, ${height})`);
       xAxisG.append('text')
       .attr('class', 'axis-label')
       .attr('x', width / 2)
@@ -82,13 +79,12 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   // Set x0Scale and yScale
   // x0Scale.domain(d3.extent(allX))//[0, maxXY[0]]);
   x0Scale.domain(allX);
- x1Scale.domain(keys).rangeRound([0, x0Scale.bandwidth()]);
+  x1Scale.domain(keys).rangeRound([0, x0Scale.bandwidth()]);
   yScale.domain([0, maxXY[1]]).range([height, 0]);
 
   // call functions from this file to generate axis, legend and barChart
   xAxisG.call(xAxis);
   yAxisG.call(yAxis);
-  drawLegend(data);
   drawGroupedBar(newData, x0Scale, yScale);
 
   // FEATURE - Redraw chart on window resize
@@ -183,6 +179,7 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
 
   function drawLegend(data){
     //  Generate legend based on datapoints
+    d3.select("div"+parent).append("ul").attr("class", "legend float-sm-right");
     var legendSelection = "div"+parent+">ul.legend";
     d3.selectAll(legendSelection+">li").remove();
     var legendItem = d3.select(legendSelection)
@@ -214,25 +211,21 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   }
 
   function drawGroupedBar(jsonData, x0Scale, yScale){
-
     //  clear existing data points, rectangles or tooltips on svg if any
-    var rectSelection = "div"+parent+">svg>g>g>g>rect";
+    var rectSelection = "div"+parent+">svg>g>g.data-points-groupedbar";
     d3.selectAll(rectSelection).remove();
     tooltip.classed('hidden', true);
-
     var dataPointsG = g.append('g')
     .attr("class", "data-points-groupedbar");
     dataPointsG
-       .selectAll("g")
+       .selectAll("rect")
        .data(jsonData)
-       .enter().append("g")
-         .attr("transform", function(d) { return "translate(" + x0Scale(d.x) + ",0)"; }).selectAll("rect")
-       .data(function(d) { return keys.map(function(key) { return {key: key, value: d.y, color:d.color}; }); })//jsonData)
        .enter().append("rect")
+       .attr("transform", function(d) { return "translate(" + x0Scale(d.x) + ",0)"; })
          .attr("x", function(d) { return x1Scale(d.key); })
-         .attr("y", function(d) { return yScale(d.value); })
+         .attr("y", function(d) { return yScale(d.y); })
          .attr("width", x1Scale.bandwidth())
-         .attr("height", function(d) { return height - yScale(d.value) + 1; })
+         .attr("height", function(d) { return height - yScale(d.y) + 1; })
          .attr("fill", function(d) { return d.color; })
       .on('mouseover', function(d){
         d3GroupedBarMouseOver(d);
@@ -243,17 +236,34 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   }
 
   function d3GroupedBarMouseOver(d, x0Scale, yScale, yScale2){
-      // show tooltip and rectangles on mouse hover
-      var mouse = d3.mouse(svg.node()).map(function(d) {
-          return parseInt(d);
-      });
-      var left = Math.min(containerwidth, mouse[0]+margin.left+margin.right),
-      top = Math.min(containerheight, mouse[1]+margin.top+margin.right);
-      var tooltipHtml = "<p class='text-capitalize'>Subject: <b>"+d.label+"</b></p><p>"+xLabel+": <b>"+d.x+"</b></p><p>"+yLabel+": <b>"+ d.y+"</b>";
-      tooltip.html(tooltipHtml)
-      .classed('hidden', false)
-      .style('left', left + 'px')
-      .style('top', top + 'px');
+    // show tooltip and rectangles on mouse hover
+    // var x = event.clientX;     // Get the horizontal coordinate
+    // var y = event.clientY;     // Get the vertical coordinate
+    // var tooltipHtml = "<p>"+xLabel+": <b>"+d.x+"</b></p><p>"+yLabel+": <b>"+ d.y+"</b>";
+    // tooltip.html(tooltipHtml)
+    // .classed('hidden', false)
+    // .style('left', x + 'px')
+    // .style('top', y + 'px');
+    var mouse = d3.mouse(svg.node()).map(function(d) {
+        return parseInt(d);
+    });
+    var left = Math.min(containerwidth, mouse[0]+margin.left+margin.right),
+    top = Math.min(containerheight, mouse[1]+margin.top+margin.right);
+    var tooltipHtml = "<p class='text-capitalize'>Subject: <b>"+d.label+"</b></p><p>"+xLabel+": <b>"+d.x+"</b></p><p>"+yLabel+": <b>"+ d.y+"</b>";
+    if(d.values !=null && d.values.length >> 0){
+      tooltipHtml +="<p>Group Size: <b>"+ d.values.length+"</b></p>";
     }
 
+    var tooltipHtml = "<p>"+xLabel+": <b>"+d.x+"</b></p><p>"+yLabel+": <b>"+ d.y+"</b>";
+    if(d.values !=null && d.values.length >> 0){
+      tooltipHtml +="<p>Group Size: <b>"+ d.values.length+"</b></p>";
+    }
+    tooltip.html(tooltipHtml)
+    .classed('hidden', false)
+    // .style('left', x + 'px')
+    // .style('top', y + 'px');
+    .style('left', left + 'px')
+    .style('top', top + 'px');
+
+    }
 } // end of GroupedBarChart()

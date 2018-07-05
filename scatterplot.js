@@ -8,12 +8,13 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
     // Create/Set DOM selectors, margins and chart dimensions
     var parentNode = d3.select(chartWrapper).node(),
         parent = chartId;
-    var margin = { left: 70, right: 20, top: 10, bottom: 120 };
+    var margin = { left: 70, right: 20, top: 30, bottom: 60 };
     var containerwidth = parentNode.getBoundingClientRect().width,
-    containerheight = parentNode.getBoundingClientRect().height,
+    containerheight = (parentNode.getBoundingClientRect().height) - 30,
     width = containerwidth - margin.left - margin.right,
     height = containerheight - margin.top - margin.bottom;
-console.log(width, height);
+
+    drawLegend(data);
     // Create SVG with chart dimensions
     var svg = d3.select(parent)
     .append('svg')
@@ -96,7 +97,7 @@ console.log(width, height);
     // call functions from this file to generate axis, legend and scatterplot
     xAxisG.call(xAxis);
     yAxisG.call(yAxis);
-    drawLegend(data);
+
     drawScatterplot(newData, xScale, yScale, yScale2);
 
     // FEATURE - double click on chart area to remove newly added points
@@ -213,6 +214,7 @@ console.log(width, height);
 
     function drawLegend(data){
       //  Generate legend based on datapoints
+      d3.select("div"+parent).append("ul").attr("class", "legend float-sm-right");
       var legendSelection = "div"+parent+">ul.legend";
       d3.selectAll(legendSelection+">li").remove();
       var legendItem = d3.select(legendSelection)
@@ -329,16 +331,28 @@ console.log(width, height);
 
     function d3ScatterplotMouseOver(d, xScale, yScale, yScale2){
         // show tooltip and rectangles on mouse hover
-        var x = event.clientX;
-        var y = event.clientY;
+        // var x = event.clientX;
+        // var y = event.clientY;
+        var mouse = d3.mouse(svg.node()).map(function(d) {
+            return parseInt(d);
+        });
+        var left = Math.min(containerwidth, mouse[0]+margin.left+margin.right),
+        top = Math.min(containerheight, mouse[1]+margin.top+margin.right);
+        var tooltipHtml = "<p class='text-capitalize'>Subject: <b>"+d.label+"</b></p><p>"+xLabel+": <b>"+d.x+"</b></p><p>"+yLabel+": <b>"+ d.y+"</b>";
+        if(d.values !=null && d.values.length >> 0){
+          tooltipHtml +="<p>Group Size: <b>"+ d.values.length+"</b></p>";
+        }
+
         var tooltipHtml = "<p class='text-capitalize'>Subject: <b>"+d.label+"</b></p><p>"+xLabel+": <b>"+d.x+"</b></p><p>"+yLabel+": <b>"+ d.y+"</b>";
         if(d.values !=null && d.values.length >> 0){
           tooltipHtml +="<p>Group Size: <b>"+ d.values.length+"</b></p>";
         }
         tooltip.html(tooltipHtml)
         .classed('hidden', false)
-        .style('left', x + 'px')
-        .style('top', y + 'px');
+        // .style('left', x + 'px')
+        // .style('top', y + 'px');
+        .style('left', left + 'px')
+        .style('top', top + 'px');
 
         // Create min-max and 1st - 3rd quartile rectangles for datapoints on hover
         if(d.values != null && d.values.length >> 1){

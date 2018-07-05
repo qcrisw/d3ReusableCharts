@@ -6,7 +6,7 @@
   stroke: #C0C0BB;
 }
 .tick text{
-  font: normal 12px sans-serif !important;
+  /* font: normal 12px sans-serif !important; */
 }
 .legendCells text {
   /* font: normal 12px sans-serif !important; */
@@ -14,23 +14,27 @@
 
 .axis-label, .legend-label {
   fill: #000;
-  font: normal 14px sans-serif !important;
+  /* font: normal 14px sans-serif !important; */
 }
 
 #xyChart, #xChart, #yChart, #scatter-plot, #grouped-barchart, #stacked-barchart, #stacked100-barchart {
-  width: 800px;
-  height: 500px !important;
+  width: 400px;
+  height: 250px;
 }
 
+#activity1, #activity2 {
+  width: 400px;
+  height: 250px;
+}
 
 .hidden {
   display:none;
 }
 
-ul.legend li {
+ul.legend, ul.legend li {
   display: inline-block;
-  margin-left: 10px;
-  font: normal 14px sans-serif !important;
+  margin: 2px;
+  /* font: normal 14px sans-serif !important; */
 }
 #color-circle {
   display:block;
@@ -61,30 +65,10 @@ ul.legend li {
   border-radius:5px;
   font-size:12px;
   color:#202020;
-  min-width:150px;
-  width:160px;
+  min-width:100px;
+  width:120px;
   border:0.5px solid #333;
   -webkit-transform:translate(0,-10%);
   transform:translate(0,-10%);
   pointer-events:none;
-}
-
-
-/* .legendCells {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-
-} */
-
-
-/* .center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-} */
-
-.bar {
-  fill: steelblue;
 }
