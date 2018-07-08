@@ -8,8 +8,8 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
     // Create/Set DOM selectors, margins and chart dimensions
     var parentNode = d3.select(chartWrapper).node(),
         parent = chartId;
-    var margin = { left: 70, right: 20, top: 30, bottom: 60 };
-    var containerwidth = parentNode.getBoundingClientRect().width,
+    var margin = { left: 70, right: 20, top: 30, bottom: 70 };
+    var containerwidth = parentNode.getBoundingClientRect().width - 20,
     containerheight = (parentNode.getBoundingClientRect().height) - 30,
     width = containerwidth - margin.left - margin.right,
     height = containerheight - margin.top - margin.bottom;
@@ -45,7 +45,7 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
         xAxisG.append('text')
         .attr('class', 'axis-label')
         .attr('x', width / 2)
-        .attr('y', 45)
+        .attr('y', 35)
         .text(xLabel);
     var yAxisG = d3.select(axisSelection).append('g')
         .attr("class", "yAxisG");
@@ -140,7 +140,7 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
         xAxisG.append('text')
             .attr('class', 'axis-label')
             .attr('x', width / 2)
-            .attr('y', 45)
+            .attr('y', 35)
             .text(xLabel);
         yAxisG.append('text')
             .attr('class', 'axis-label')

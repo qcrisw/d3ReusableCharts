@@ -3,8 +3,8 @@
 <head>
 	<title>Activity Comparison Dashboard</title>
 
-	<script src="https://d3js.org/d3.v4.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+	<script src="d3-v4.js"></script>
+	<script src="jquery.min.js"></script>
 
 	<link href="resources/bootstrap4/css/bootstrap-select.css" rel="stylesheet" type="text/css">
 
@@ -24,6 +24,7 @@
 	<script type="text/javascript" src="barChart.js"></script>
 	<script type="text/javascript" src="normalizedStackBarChart.js"></script>
 	<script type="text/javascript" src="stackedBarchart.js"></script>
+		<script type="text/javascript" src="stackBarWeek.js"></script>
 	<script type="text/javascript" src="violinplot.js"></script>
 
 </head>
@@ -33,13 +34,41 @@
 			<div id="dataTablePanel" class="card mb-1">
 				<div class="card-body">
 					<div class="row">
+    <!-- ############ Stacked bar - over DATE ################ -->
 						<div class=col-sm-6>
 							<div class="card border-selection1 mb-2">
-								<div class="card-body">
-									<div class="svg-lg" id="activity1">
-										<svg>
-												<!-- stackbar -->
-										</svg>
+								<div class="card-body" id="chart0">
+									<div id="activity1">
+										<!-- <ul class="legend" align="right"></ul> -->
+										<script>
+										var datta =
+[{"date":"2015-02-11 00:00:00","values":[107,0,95,250,122,26],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]},{"date":"2015-03-18 00:00:00","values":[366,0,278,579,163,54],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]},{"date":"2015-02-10 00:00:00","values":[658,0,84,282,208,208],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]},{"date":"2015-02-15 00:00:00","values":[477,0,204,519,187,53],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]},{"date":"2015-02-21 00:00:00","values":[370,0,239,614,171,46],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]},{"date":"2015-02-22 00:00:00","values":[576,0,96,315,209,244],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]},{"date":"2015-02-05 00:00:00","values":[438,0,391,429,159,23],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]},{"date":"2015-02-03 00:00:00","values":[335,0,24,17,30,14],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]}];
+
+								      chartWrapper = '#chart0';
+								      chartId = '#activity1';
+								      xAxisLabel = "X AXIS";
+								      yAxisLabel = "Y AXIS"; //stackedbar_grp
+ 											StackedBarChart(datta, chartWrapper, chartId, xAxisLabel, yAxisLabel);
+								    </script>
+									</div>
+								</div>
+							</div>
+						</div>
+
+    <!-- ############ Stacked Bar - hourly for Weekday/Weekend ################ -->
+						<div class=col-sm-6>
+							<div class="card border-selection1 mb-2">
+								<div class="card-body" id="chart01">
+									<div id="activity2">
+										<!-- <ul class="legend" align="right"></ul> -->
+										<script>
+										var dattta = [{"x":5,"date":"Feb 8, 2015 12:00:00 AM","values":[107,0,95,250,122,26],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]},{"x":15,"date":"Feb 9, 2015 12:00:00 AM","values":[366,0,278,579,163,54],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]},{"x":10,"date":"Feb 10, 2015 12:00:00 AM","values":[658,0,84,282,208,208],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]},{"x":12,"date":"Feb 11, 2015 12:00:00 AM","values":[477,0,204,519,187,53],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]},{"x":6,"date":"Feb 12, 2015 12:00:00 AM","values":[370,0,239,614,171,46],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]},{"x":3,"date":"Feb 13, 2015 12:00:00 AM","values":[576,0,96,315,209,244],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]},{"x":13,"date":"Feb 14, 2015 12:00:00 AM","values":[438,0,391,429,159,23],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]},{"x":2,"date":"Feb 15, 2015 12:00:00 AM","values":[335,0,24,17,30,14],"labels":["sleep","nap","sedentary","light","moderate","vigorous"],"colors":["#3182bd","#9ecae1","#fee5d9","#fcae91","#fb6a4a","#de2d26"]}];
+								      chartWrapper = '#chart01';
+								      chartId = '#activity2';
+								      xAxisLabel = "X AXIS";
+								      yAxisLabel = "Y AXIS";
+ 											StackedBarChart2(dattta, chartWrapper, chartId, xAxisLabel, yAxisLabel);
+								    </script>
 									</div>
 								</div>
 							</div>
@@ -50,6 +79,7 @@
 							<div class="card border-comparison mb-2">
 								<div class="card-body" id="chart1">
 									<div id="xChart">
+										<!-- <ul class="legend" align="right"></ul> -->
 										<script>
 												chartWrapper2 = 'div.card-body#chart1';
 												chartId2 = '#xChart';
@@ -66,6 +96,7 @@
 							<div class="card border-comparison mb-2">
 								<div class="card-body" id="chart2">
 									<div id="xyChart">
+										<!-- <ul class="legend" align="right"></ul> -->
 										<script>
 											chartWrapper = 'div.card-body#chart2';
 											chartId = '#xyChart';

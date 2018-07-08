@@ -34,8 +34,10 @@
 ul.legend, ul.legend li {
   display: inline-block;
   margin: 2px;
-  /* font: normal 14px sans-serif !important; */
+  color: black;
+  font: 400 12px Arial, sans-serif;
 }
+
 #color-circle {
   display:block;
   float:left;
@@ -57,7 +59,7 @@ ul.legend, ul.legend li {
   border: 1px solid rgba(0,0,0, 0.5);
   }
 
-  .d3-scatterplot-tooltip, .d3-grouped-barchart-tooltip {
+  .d3-scatterplot-tooltip, .d3-grouped-barchart-tooltip, .d3-stack-barchart-tooltip, .d3-stack-barchart-week-tooltip {
   position:absolute;
   z-index:1000;
   background:rgb(256,256,250,0.7);
