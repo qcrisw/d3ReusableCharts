@@ -9,7 +9,7 @@ function StackedBarChart2(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
     var width = containerwidth - margin.left - margin.right;
     var height = containerheight - margin.top - margin.bottom;
 
-
+    d3.selectAll("div"+chartId+">svg").remove();
     var stack = d3.stack()
         .order(d3.stackOrderNone)
         .offset(d3.stackOffsetExpand);
@@ -82,9 +82,9 @@ function StackedBarChart2(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
       .text(yLabel);
 
   // Create d3 axis and set axis ticks & size
-  var xAxis = d3.axisBottom()
-    .scale(xScale)
+  var xAxis = d3.axisBottom(xScale)
     .ticks(10)
+    .tickPadding(2)
     .tickSize(-height);
   var yAxis = d3.axisLeft()
     .scale(yScale2)
@@ -100,7 +100,12 @@ function StackedBarChart2(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   // call functions from this file to generate axis, legend and barChart
   var xAxisTickSelection = "div"+chartId+">svg>g>g.xAxisG>g.tick>text";
 
-  xAxisG.call(xAxis).selectAll(xAxisTickSelection).style("text-anchor", "end");
+  xAxisG.call(xAxis)
+  	.selectAll(xAxisTickSelection)
+  	.attr("dx", "-1.5em")
+    .attr("dy", "1.1em")
+  	.style("text-anchor", "end")
+  	.attr("transform", "rotate(-65)");
 
   yAxisG.call(yAxis);
 

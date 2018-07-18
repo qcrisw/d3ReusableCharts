@@ -1,40 +1,35 @@
 function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
-
-
   // Create/Set DOM selectors, margins and chart dimensions
-    var margin = { top: 30, right: 50,  bottom: 70, left: 70 };
-    var parentDiv = d3.select(chartWrapper).node().getBoundingClientRect();
-    console.log(parentDiv.width);
-    var containerwidth = parentDiv.width;
-    var containerheight = 280;
-    var width = containerwidth - margin.left - margin.right;
-    var height = containerheight - margin.top - margin.bottom;
+  var margin = { top: 30, right: 50,  bottom: 70, left: 70 };
+  var parentDiv = d3.select(chartWrapper).node().getBoundingClientRect();
+  console.log(parentDiv.width);
+  var containerwidth = parentDiv.width;
+  var containerheight = 280;
+  var width = containerwidth - margin.left - margin.right;
+  var height = containerheight - margin.top - margin.bottom;
 
-
+  d3.selectAll("div"+chartId+">svg").remove();
   var stack = d3.stack()
-      .order(d3.stackOrderNone)
-      .offset(d3.stackOffsetExpand);
-
-    // Call data and add enabled key - for legend toggling functionality
-    var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S") //d3.timeParse("%b %d, %Y %H:%M:%S");
-    // Ungroup data and find maxX and maxY value
-    var newData = unGroupData(data);
-    var allKeys = ["sleep","nap","sedentary","light","moderate","vigorous"];
-
-    var groupData = d3.nest().key(function(d){
-      return d.date;
-    }).entries(newData);
-
-    groupData = formatGroupData(groupData);
-
-    var colorScale = d3.scaleOrdinal().range(["#3182bd", "#9ecae1", "#fee5d9", "#fcae91", "#fb6a4a", "#de2d26"]);
-    colorScale.domain(allKeys);
-
-    var newGroupData = stack.keys(allKeys)(groupData);
-    newGroupData.forEach(function(d) {
-     d.enabled = true;
-    });
-    drawLegend(newGroupData);
+	  .order(d3.stackOrderNone)
+	  .offset(d3.stackOffsetExpand);
+  // Call data and add enabled key - for legend toggling functionality
+  var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S") //d3.timeParse("%b %d, %Y %H:%M:%S");
+  // Ungroup data and find maxX and maxY value
+  var newData = unGroupData(data);
+  var allKeys = ["sleep","nap","sedentary","light","moderate","vigorous"];
+  var groupData = d3.nest().key(function(d){
+	  return d.date;
+	}).entries(newData);
+  groupData = formatGroupData(groupData);
+  var colorScale = d3.scaleOrdinal().range(["#3182bd", "#9ecae1", "#fee5d9", "#fcae91", "#fb6a4a", "#de2d26"]);
+  colorScale.domain(allKeys);
+  var newGroupData = stack.keys(allKeys)(groupData);
+	newGroupData.forEach(function(d) {
+	 d.enabled = true;
+	});
+  
+  //drawLegend appends to the chartId div and does not require SVG
+  drawLegend(newGroupData);
 
   // Create SVG with chart dimensions
   var svg = d3.select(chartId)
@@ -45,11 +40,10 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   .append('g')
   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-  //  Create tooltip
+  //  Create tool tip
   var tooltip = d3.select(chartId)
   .append('div')
   .attr('class', 'd3-stack-barchart-tooltip hidden');
-
 
   // Create Chart Axis labels and scales
   var xLabel = xAxisLabel;
@@ -60,20 +54,19 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   var yScale2 = d3.scaleLinear()
       .range([height, 0]);
 
-
   //  Create groups for x and y axis labels
   var axisSelection = "div"+chartId+">svg>g";
   var xAxisG = d3.select(axisSelection).append('g')
       .attr('transform', `translate(0, ${height})`)
       .attr("class", "xAxisG");
-      xAxisG.append('text')
+  xAxisG.append('text')
       .attr('class', 'axis-label')
       .attr('x', width / 2)
       .attr('y', 70)
       .text(xLabel);
   var yAxisG = d3.select(axisSelection).append('g')
       .attr("class", "yAxisG");
-      yAxisG.append('text')
+  yAxisG.append('text')
       .attr('class', 'axis-label')
       .attr('x', -height / 2)
       .attr('y', -55)
@@ -84,13 +77,13 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   // Create d3 axis and set axis ticks & size
   var xAxis = d3.axisBottom()
     .scale(xScale)
-    .ticks(10)
+    .ticks(3)
     .tickPadding(2)
-    // .tickFormat(d3.timeFormat('%Y-%m-%d'))
     .tickSize(-height);
+  
   var yAxis = d3.axisLeft()
     .scale(yScale2)
-    .ticks(10)
+    .ticks(5)
     .tickPadding(15)
     .tickSize(-width);
 
@@ -103,8 +96,12 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   // call functions from this file to generate axis, legend and barChart
   var xAxisTickSelection = "div"+chartId+">svg>g>g.xAxisG>g.tick>text";
 
-  xAxisG.call(xAxis).selectAll(xAxisTickSelection).style("text-anchor", "end")
-  .attr("transform", "rotate(-25)");
+  xAxisG.call(xAxis)
+  	.selectAll(xAxisTickSelection)
+  	.attr("dx", "-1.5em")
+    .attr("dy", "1.1em")
+  	.style("text-anchor", "end")
+    .attr("transform", "rotate(-35)");
 
   yAxisG.call(yAxis);
 
@@ -139,7 +136,7 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
       yAxisG.call(yAxis);
       d3.select(axisSelection+'>g.xAxisG>text').remove();
       d3.select(axisSelection+'>g.yAxisG>text').remove();
-      d3.selectAll("div"+chartId+">svg>g.data-rectangles").remove();
+      d3.selectAll("div"+chartId+">svg>g>g.data-rectangles").remove();
 
       xAxisG.append('text')
           .attr('class', 'axis-label')
@@ -164,6 +161,9 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
 
 
       data.forEach(function(d){
+    	var xDate = d.date;
+    	d.date = xDate.replace("00:00:00", "");
+	    //d.date = parseTime(d.date);
         for( i in d.values) {
         dataUnGrouped.push({
           "date": d.date,

@@ -12,6 +12,8 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
       var width = containerwidth - margin.left - margin.right;
       var height = containerheight - margin.top - margin.bottom;
 
+      d3.selectAll("div"+chartId+">svg").remove();
+      
       drawLegend(data);
       // Create SVG with chart dimensions
       var svg = d3.select(chartId)
