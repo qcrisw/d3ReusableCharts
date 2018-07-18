@@ -17,15 +17,10 @@
   /* font: normal 14px sans-serif !important; */
 }
 
-#xyChart, #xChart, #yChart, #scatter-plot, #grouped-barchart, #stacked-barchart, #stacked100-barchart {
-  width: 400px;
-  height: 250px;
+#activity1_parent, #activity2_parent, #activity_weekday1_parent, #activity_weekday2_parent, #activity_weekend1_parent, #activity_weekend2_parent, #xChart_parent, #yChart_parent, #xyChart_parent{
+  
 }
 
-#activity1, #activity2 {
-  width: 400px;
-  height: 250px;
-}
 
 .hidden {
   display:none;

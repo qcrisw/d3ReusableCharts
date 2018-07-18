@@ -1,16 +1,15 @@
 function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   // Create/Set DOM selectors, margins and chart dimensions
-  var parentNode = d3.select(chartWrapper).node(),
-      parent = chartId;
-  var margin = { left: 70, right: 20, top: 10, bottom: 120 };
-  var containerwidth = parentNode.getBoundingClientRect().width - 20,
-  containerheight = parentNode.getBoundingClientRect().height - 30,
-  width = containerwidth - margin.left - margin.right,
-  height = containerheight - margin.top - margin.bottom;
+    var margin = { top: 30, right: 50,  bottom: 70, left: 70 };
+    var parentDiv = d3.select(chartWrapper).node().getBoundingClientRect();
+    var containerwidth = parentDiv.width;
+    var containerheight = 280;
+    var width = containerwidth - margin.left - margin.right;
+    var height = containerheight - margin.top - margin.bottom;
 
   drawLegend(data);
   // Create SVG with chart dimensions
-  var svg = d3.select(parent)
+  var svg = d3.select(chartId)
   .append('svg')
   .attr('width', containerwidth)
   .attr('height', containerheight);
@@ -19,13 +18,12 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
   //  Create tooltip
-  var tooltip = d3.select(parent)
+  var tooltip = d3.select(chartId)
   .append('div')
   .attr('class', 'd3-grouped-barchart-tooltip hidden');
 
 
-  // Create Chart Axis format, axis labels and scales
-  // var format = d3.format(".2s");
+  // Create Chart Axis labels and scales
   var xLabel = xAxisLabel;
   var x0Scale = d3.scaleBand().rangeRound([0, width]).paddingInner(0.1);
   var x1Scale = d3.scaleBand().padding(0.05);
@@ -33,7 +31,7 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   var yScale = d3.scaleLinear().rangeRound([height, 0]);
 
   //  Create groups in svg for x and y axis labels and add labels
-  var axisSelection = "div"+parent+">svg>g";
+  var axisSelection = "div"+chartId+">svg>g";
   var xAxisG = d3.select(axisSelection).append('g')
       .attr("class", "xAxisG")
       .attr('transform', `translate(0, ${height})`);
@@ -57,13 +55,13 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
     .scale(x0Scale)
     .ticks(10)
     .tickPadding(15)
-    //.tickFormat(function(d) {return format(d)})
+    .tickFormat(d3.format(".0s"))
     .tickSize(-height);
   var yAxis = d3.axisLeft()
     .scale(yScale)
     .ticks(10)
     .tickPadding(15)
-    //.tickFormat(function(d) {return format(d)})
+    //.tickFormat(d3.format(".0s"))
     .tickSize(-width);
 
 
@@ -71,12 +69,13 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   data.forEach(function(d) {
    d.enabled = true;
   });
-  data.sort(function(a,b){
-    return a.x - b.x;
-  })
+
   var allX = [];
   var maxXY = findMaxXY(data);
   var newData = unGroupData(data);
+  newData.sort(function(a,b){
+	    return a.x - b.x;
+	  })
   var keys = [data[0].key, data[1].key];
 
   // Set x0Scale and yScale
@@ -86,7 +85,7 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   yScale.domain([0, maxXY[1]]).range([height, 0]);
 
   // call functions from this file to generate axis, legend and barChart
-  // var xAxisTickSelection = "div"+parent+">svg>g>g.xAxisG>g.tick>text";
+  // var xAxisTickSelection = "div"+chartId+">svg>g>g.xAxisG>g.tick>text";
 
   xAxisG.call(xAxis)//.selectAll(xAxisTickSelection).attr("transform", "rotate(-30)");
   yAxisG.call(yAxis);
@@ -94,10 +93,13 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
 
   // FEATURE - Redraw chart on window resize
   $(window).on('resize', function() {
-      containerwidth = parentNode.getBoundingClientRect().width,
-      containerheight = parentNode.getBoundingClientRect().height,
-      width = containerwidth - margin.left - margin.right,
-      height = containerheight - margin.top - margin.bottom;
+      var margin = { top: 30, right: 50,  bottom: 70, left: 70 };
+      var parentDiv = d3.select(chartWrapper).node().getBoundingClientRect();
+      console.log(parentDiv.width, data);
+      var containerwidth = parentDiv.width;
+      var containerheight = 280;
+      var width = containerwidth - margin.left - margin.right;
+      var height = containerheight - margin.top - margin.bottom;
 
       xAxisG.attr('transform', `translate(0, ${height})`).attr('x', width / 2);
 
@@ -112,7 +114,7 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
       yScale
       .range([height, 0]);
 
-      d3.select(parent + ' svg, ' + parent + ' svg g').attr('width', containerwidth).attr('height', containerheight);
+      d3.select(chartId + ' svg, ' + chartId + ' svg g').attr('width', containerwidth).attr('height', containerheight);
 
       xAxisG.call(xAxis);
       yAxisG.call(yAxis);
@@ -184,8 +186,8 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
 
   function drawLegend(data){
     //  Generate legend based on datapoints
-    d3.select("div"+parent).append("ul").attr("class", "legend float-sm-right");
-    var legendSelection = "div"+parent+">ul.legend";
+    d3.select("div"+chartId).append("ul").attr("class", "legend float-sm-right");
+    var legendSelection = "div"+chartId+">ul.legend";
     d3.selectAll(legendSelection+">li").remove();
     var legendItem = d3.select(legendSelection)
       .selectAll("li")
@@ -217,7 +219,7 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
 
   function drawGroupedBar(jsonData, x0Scale, yScale){
     //  clear existing data points, rectangles or tooltips on svg if any
-    var rectSelection = "div"+parent+">svg>g>g.data-points-groupedbar";
+    var rectSelection = "div"+chartId+">svg>g>g.data-points-groupedbar";
     d3.selectAll(rectSelection).remove();
     tooltip.classed('hidden', true);
     var dataPointsG = g.append('g')
