@@ -5,10 +5,10 @@
 **/
 function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
 
-      var margin = { top: 30, right: 50,  bottom: 70, left: 70 };
+      var margin = { top: 5, right: 50,  bottom: 70, left: 70 };
       var parentDiv = d3.select(chartWrapper).node().getBoundingClientRect();
       var containerwidth = parentDiv.width;
-      var containerheight = 280;
+      var containerheight = 200;
       var width = containerwidth - margin.left - margin.right;
       var height = containerheight - margin.top - margin.bottom;
 
@@ -196,12 +196,19 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
               for(j in data[i].values) {
                 allX.push(data[i].values[j].xMax)
                 allY.push(data[i].values[j].yMax)
-                var x = data[i].values[j].values;
               }
+              xMaxX = allX.reduce(function(a, b) { return Math.max(a, b); });
+              yMaxY = allY.reduce(function(a, b) { return Math.max(a, b); });
             }
-            xMaxX = allX.reduce(function(a, b) { return Math.max(a, b); });
+            else if(data[i].group == false){
+            	for(j in data[i].values) {
+                    allX.push(data[i].values[j].x)
+                    allY.push(data[i].values[j].y)
+                  }
+        	xMaxX = allX.reduce(function(a, b) { return Math.max(a, b); });
             yMaxY = allY.reduce(function(a, b) { return Math.max(a, b); });
-          }
+            }
+          } console.log(data, allX, allY)
           return [xMaxX, yMaxY];
         }
 
@@ -421,6 +428,4 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
               }
            }
         }
-
-
  }
