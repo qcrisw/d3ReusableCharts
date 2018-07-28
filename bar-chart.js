@@ -21,10 +21,10 @@ d3.selectAll("div"+chartId+">svg").remove();
 	  })
 	  console.log(newData)
   var keys = [data[0].key, data[1].key];
-  
+
   //drawLegend appends to the chartId div and does not require SVG
   drawLegend(data);
-  
+
   // Create SVG with chart dimensions
   var svg = d3.select(chartId)
   .append('svg')
@@ -57,7 +57,7 @@ d3.selectAll("div"+chartId+">svg").remove();
       .attr('y', 45)
       .style('text-anchor', 'middle')
       .text(xLabel);
-  
+
   var yAxisG = d3.select(gSelection).append('g')
       .attr("class", "yAxisG");
   yAxisG.append('text')
@@ -95,7 +95,7 @@ d3.selectAll("div"+chartId+">svg").remove();
   	  .selectAll(xAxisTickSelection)
   	  .attr("dx", "-1.5em")
       .attr("dy", "-1.1em")
-	  .attr("transform", "rotate(-65)"); 
+	  .attr("transform", "rotate(-65)");
   yAxisG.call(yAxis);
   drawGroupedBar(newData, x0Scale, yScale);
 
@@ -251,34 +251,26 @@ d3.selectAll("div"+chartId+">svg").remove();
   }
 
   function d3GroupedBarMouseOver(d, x0Scale, yScale, yScale2){
-    // show tooltip and rectangles on mouse hover
-    // var x = event.clientX;     // Get the horizontal coordinate
-    // var y = event.clientY;     // Get the vertical coordinate
-    // var tooltipHtml = "<p>"+xLabel+": <b>"+d.x+"</b></p><p>"+yLabel+": <b>"+ d.y+"</b>";
-    // tooltip.html(tooltipHtml)
-    // .classed('hidden', false)
-    // .style('left', x + 'px')
-    // .style('top', y + 'px');
+    // show tooltip on mouse hover
+    var parentDiv = d3.select(chartWrapper).node().getBoundingClientRect();
     var mouse = d3.mouse(svg.node()).map(function(d) {
         return parseInt(d);
     });
-    var left = Math.min(containerwidth, mouse[0]+margin.left+margin.right),
-    top = Math.min(containerheight, mouse[1]+margin.top+margin.right);
-    var tooltipHtml = "<p class='text-capitalize'>Subject: <b>"+d.label+"</b></p><p>"+xLabel+": <b>"+d.x+"</b></p><p>"+yLabel+": <b>"+ d.y+"</b>";
-    if(d.values !=null && d.values.length >> 0){
-      tooltipHtml +="<p>Group Size: <b>"+ d.values.length+"</b></p>";
-    }
 
     var tooltipHtml = "<p>"+xLabel+": <b>"+d.x+"</b></p><p>"+yLabel+": <b>"+ d.y+"</b>";
     if(d.values !=null && d.values.length >> 0){
       tooltipHtml +="<p>Group Size: <b>"+ d.values.length+"</b></p>";
     }
     tooltip.html(tooltipHtml)
-    .classed('hidden', false)
-    // .style('left', x + 'px')
-    // .style('top', y + 'px');
-    .style('left', left + 'px')
-    .style('top', top + 'px');
+    .classed('hidden', false);
 
+    if(mouse[0]<parentDiv.width/2){
+      tooltip.style('left', mouse[0] + 50 + 'px')
+      .style('top', mouse[1] + 'px');
+    }
+    else {
+      tooltip.style('left', mouse[0] -150 + 'px')
+      .style('top', mouse[1] + 'px');
+    }
     }
 } // end of GroupedBarChart()

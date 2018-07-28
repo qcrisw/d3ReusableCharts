@@ -7,18 +7,17 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
 
       var margin = { top: 5, right: 50,  bottom: 70, left: 70 };
       var parentDiv = d3.select(chartWrapper).node().getBoundingClientRect();
-      var containerwidth = parentDiv.width;
       var containerheight = 200;
-      var width = containerwidth - margin.left - margin.right;
+      var width = parentDiv.width - margin.left - margin.right;
       var height = containerheight - margin.top - margin.bottom;
 
       d3.selectAll("div"+chartId+">svg").remove();
-      
+
       drawLegend(data);
       // Create SVG with chart dimensions
       var svg = d3.select(chartId)
       .append('svg')
-      .attr('width', containerwidth)
+      .attr('width', parentDiv.width)
       .attr('height', containerheight);
       var g = svg.append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -111,10 +110,8 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
       $(window).on('resize', function() {
     	var margin = { top: 30, right: 50,  bottom: 70, left: 70 };
         var parentDiv = d3.select(chartWrapper).node().getBoundingClientRect();
-        console.log(parentDiv.width);
-        var containerwidth = parentDiv.width;
         var containerheight = 280;
-        var width = containerwidth - margin.left - margin.right;
+        var width = parentDiv.width - margin.left - margin.right;
         var height = containerheight - margin.top - margin.bottom;
 
           xAxisG.attr('transform', `translate(0, ${height})`).attr('x', width / 2);
@@ -130,7 +127,7 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
           yScale
           .range([height, 0]);
 
-          d3.select(chartId + ' svg, ' + chartId + ' svg g').attr('width', containerwidth).attr('height', containerheight);
+          d3.select(chartId + ' svg, ' + chartId + ' svg g').attr('width', parentDiv.width).attr('height', containerheight);
 
           xAxisG.call(xAxis);
           yAxisG.call(yAxis);
@@ -341,28 +338,26 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
 
       function d3ScatterplotMouseOver(d, xScale, yScale, yScale2){
           // show tooltip and rectangles on mouse hover
-          // var x = event.clientX;
-          // var y = event.clientY;
+          var parentDiv = d3.select(chartWrapper).node().getBoundingClientRect();
           var mouse = d3.mouse(svg.node()).map(function(d) {
               return parseInt(d);
           });
-          var left = Math.min(containerwidth, mouse[0]+margin.left+margin.right),
-          top = Math.min(containerheight, mouse[1]+margin.top+margin.right);
-          var tooltipHtml = "<p class='text-capitalize'>Subject: <b>"+d.label+"</b></p><p>"+xLabel+": <b>"+d.x+"</b></p><p>"+yLabel+": <b>"+ d.y+"</b>";
-          if(d.values !=null && d.values.length >> 0){
-            tooltipHtml +="<p>Group Size: <b>"+ d.values.length+"</b></p>";
-          }
 
           var tooltipHtml = "<p class='text-capitalize'>Subject: <b>"+d.label+"</b></p><p>"+xLabel+": <b>"+d.x+"</b></p><p>"+yLabel+": <b>"+ d.y+"</b>";
           if(d.values !=null && d.values.length >> 0){
             tooltipHtml +="<p>Group Size: <b>"+ d.values.length+"</b></p>";
           }
           tooltip.html(tooltipHtml)
-          .classed('hidden', false)
-          // .style('left', x + 'px')
-          // .style('top', y + 'px');
-          .style('left', left + 'px')
-          .style('top', top + 'px');
+          .classed('hidden', false);
+
+          if(mouse[0]<parentDiv.width/2){
+            tooltip.style('left', mouse[0] + 50 + 'px')
+            .style('top', mouse[1] + 'px');
+          }
+          else {
+            tooltip.style('left', mouse[0] -150 + 'px')
+            .style('top', mouse[1] + 'px');
+          }
 
           // Create min-max and 1st - 3rd quartile rectangles for datapoints on hover
           if(d.values != null && d.values.length >> 1){

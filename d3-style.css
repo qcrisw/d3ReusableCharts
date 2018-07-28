@@ -18,7 +18,7 @@
 }
 
 #activity1_parent, #activity2_parent, #activity_weekday1_parent, #activity_weekday2_parent, #activity_weekend1_parent, #activity_weekend2_parent, #xChart_parent, #yChart_parent, #xyChart_parent{
-  
+
 }
 
 
@@ -56,16 +56,14 @@ ul.legend, ul.legend li {
 
   .d3-scatterplot-tooltip, .d3-grouped-barchart-tooltip, .d3-stack-barchart-tooltip, .d3-stack-barchart-week-tooltip {
   position:absolute;
-  z-index:1000;
+  /* text-align: center; */
   background:rgb(256,256,250,0.7);
   padding:5px 10px;
   border-radius:5px;
   font-size:12px;
   color:#202020;
-  min-width:100px;
-  width:120px;
+  min-width:120px;
+  width:130px;
   border:0.5px solid #333;
-  -webkit-transform:translate(0,-10%);
-  transform:translate(0,-10%);
   pointer-events:none;
 }

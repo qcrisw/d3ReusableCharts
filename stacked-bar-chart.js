@@ -27,7 +27,7 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
 	newGroupData.forEach(function(d) {
 	 d.enabled = true;
 	});
-  
+
   //drawLegend appends to the chartId div and does not require SVG
   drawLegend(newGroupData);
 
@@ -80,7 +80,7 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
     .ticks(3)
     .tickPadding(2)
     .tickSize(-height);
-  
+
   var yAxis = d3.axisLeft()
     .scale(yScale2)
     .ticks(5)
@@ -315,21 +315,24 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   }
 
   function d3StackedBarMouseOver(d, xScale, yScale, yScale2){
-    // show tooltip and rectangles on mouse hover
-    // var x = event.clientX;
-    // var y = event.clientY;
+    // show tooltip on mouse hover
+    var parentDiv = d3.select(chartWrapper).node().getBoundingClientRect();
     var mouse = d3.mouse(svg.node()).map(function(d) {
         return parseInt(d);
     });
-    var left = Math.min(containerwidth, mouse[0]+margin.left+margin.right),
-    top = Math.min(containerheight, mouse[1]+margin.top+margin.right);
+
     var tooltipHtml = "<p>"+xLabel+": <b>"+d.data.key+"</b></p>";
     tooltip.html(tooltipHtml)
-    .classed('hidden', false)
-    // .style('left', x + 'px')
-    // .style('top', y + 'px');
-    .style('left', left + 'px')
-    .style('top', top + 'px');
+    .classed('hidden', false);
+
+    if(mouse[0]<parentDiv.width/2){
+      tooltip.style('left', mouse[0] + 50 + 'px')
+      .style('top', mouse[1] + 'px');
+    }
+    else {
+      tooltip.style('left', mouse[0] -150 + 'px')
+      .style('top', mouse[1] + 'px');
+    }
     }
 
-} // end of GroupedBarChart()
+}
