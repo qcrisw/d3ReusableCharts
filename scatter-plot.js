@@ -232,7 +232,7 @@ function Scatterplot(data, chartWrapper, chartId, xAxisLabel, yAxisLabel) {
         	xMaxX = allX.reduce(function(a, b) { return Math.max(a, b); });
             yMaxY = allY.reduce(function(a, b) { return Math.max(a, b); });
             }
-          } console.log(data, allX, allY)
+          } 
           return [xMaxX, yMaxY];
         }
 

@@ -74,8 +74,7 @@ function GroupedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
 
       //  clear existing data points, rectangles or tooltips on svg if any
       d3.selectAll(gSelection+">g").remove();
-      var rectSelection = "div"+chartId+">svg>g>g.data-points-groupedbar";
-      d3.selectAll(rectSelection).remove();
+      d3.selectAll(gSelection+">g.data-points-groupedbar").remove();
       tooltip.classed('hidden', true);
       d3.selectAll(gSelection+'>g.xAxisG>text').remove();
       d3.selectAll(gSelection+'>g.yAxisG>text').remove();
