@@ -54,19 +54,20 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
      }
   }
   groupData = formatGroupData(groupData);
+  groupData.forEach(function(d) {
+	 d.enabled = true;
+	});
   var newGroupData = stack.keys(allKeys)(groupData);
   // Add enabled key - for legend toggling functionality
 	newGroupData.forEach(function(d) {
 	 d.enabled = true;
 	});
 
-
-
   var colorScale = d3.scaleOrdinal().range(["#3182bd", "#9ecae1", "#fee5d9", "#fcae91", "#fb6a4a", "#de2d26"]);
   colorScale.domain(allKeys);
 
   //drawLegend appends to the chartId div and does not require SVG
-  drawLegend(newGroupData, colorScale);
+  drawLegend(groupData, newGroupData, colorScale);
 
   // Create SVG with chart dimensions
   var svg = d3.select(chartId)
@@ -128,7 +129,7 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
         .ticks(5)
         .tickPadding(15)
         .tickSize(-newWidth);
-    yScale2.domain([0, d3.max(groupData, function(d) { return d.total; })]).nice();
+    yScale2.domain([0, d3.max(groupData, function(d) { return d.total; })]);
 
     //  Create groups for x and y axis labels and add text labels
     var xAxisG = d3.select(gSelection).append('g')
@@ -192,7 +193,6 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   function unGroupData(data){
       // Flatten or ungroup nested data
       var dataUnGrouped = [];
-
 
       data.forEach(function(d){
     	var xDate = d.date;
@@ -268,18 +268,17 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
     return data;
     }
 
-  function filterEnabled(jsonData) {
+  function filterEnabled(data) {
       // Filtering data based on d.enabled (written for legend filtering)
       var filteredData = [];
-      for(i in jsonData){
-        if(jsonData[i].enabled ==true){
-          filteredData.push(jsonData[i])
+      for(i in data){
+        if(data[i].enabled ==true){
+          filteredData.push(data[i])
         }}
-
       return filteredData;
      }
 
-  function drawLegend(data, colorScale){
+  function drawLegend(groupData, jsonData, colorScale){
     //  Generate legend based on datapoints
     d3.select("div"+chartId).append("ul").attr("class", "legend float-sm-right");
 
@@ -287,7 +286,7 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
     d3.selectAll(legendSelection+">li").remove();
     var legendItem = d3.select(legendSelection)
       .selectAll("li")
-      .data(data)
+      .data(jsonData)
       .enter()
       .append("li");
     legendItem
@@ -301,15 +300,38 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
       .text(function(d) {
         return (d.key)
       });
-
+    var keyValue = [];
     legendItem
       .on('click', function(d) {
         // data Filter - onClick functionality for Legend
-        d3.select(this).select("span").classed("legend-active", d3.select(this).select("span").classed("legend-active")? false: true);
+        d3.select(this).select("span").classed("legend-active",d3.select(this).select("span").classed("legend-active")? false: true);
         d.enabled = !d.enabled;
-        var fData= filterEnabled(data);
+        var filteredKey = d.key;
+        groupData.forEach(function(e){
+          if(d.enabled == false){
+            keyValue.push({
+              "key": e.key,
+              [filteredKey]: e[filteredKey],
+              "total": e.total
+              })
+            e.total = e.total - e[filteredKey]
+            e[filteredKey] = null;
+           }
+           else {
+             groupData.forEach(function(e){
+               keyValue.forEach(function(f){
+               e.total = f.total + f[filteredKey]
+               e[filteredKey]= f[filteredKey]
+               })
+             })
+           }
+        })
+        console.log(keyValue, groupData);
+        var xx = stack.keys(allKeys)(groupData);
+        // console.log(xx);
+        var fData= filterEnabled(xx)//(data);
         d3.selectAll("div"+chartId+">svg>g>g.data-rectangles").remove();
-        drawStackedBar(fData, width, height);
+        drawStackedBar(xx, width, height);
        });
   }
 
