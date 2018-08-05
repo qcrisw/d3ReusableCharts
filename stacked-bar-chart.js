@@ -7,7 +7,7 @@
 * The json response from backend contains x vlaue to be null for generating Activity Across time chart. Based on the x value, we reuse the same function to generate all stacked bar charts
 **/
 
-function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
+function StackedBarChart2(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
 
   // Create/Set DOM selectors, margins and chart dimensions
   var margin = { top: 30, right: 35,  bottom: 70, left: 70 };
@@ -21,19 +21,12 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   // Remove svg under this div, if any
   d3.selectAll("div"+chartId+">svg").remove();
 
-  // Initialize stack layout in d3
-  var stack = d3.stack()
-	  .order(d3.stackOrderNone)
-	  .offset(d3.stackOffsetExpand);
+  var allKeys = ["sleep","nap","sedentary","light","moderate","vigorous"];
 
   // DATA MANIPULATION & MODELLING
-
-  // var parseTime = d3.timeParse("%Y-%m-%d");
-
-  // Ungroup data and find maxX and maxY value
-  var allKeys = ["sleep","nap","sedentary","light","moderate","vigorous"];
   // x value is null for weekdays and weekends stackBar
   for(i in data){
+    data[i].enabled = true;
     if(data[i].x != null) {
     data.sort(function(a,b) { return a.x - b.x; });
     var newData = unGroupData(data);
@@ -56,8 +49,8 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   groupData = formatGroupData(groupData);
   groupData.forEach(function(d) {
 	 d.enabled = true;
-	});
-  var newGroupData = stack.keys(allKeys)(groupData);
+	 });
+  var newGroupData = d3.stack().keys(allKeys)(groupData);
   // Add enabled key - for legend toggling functionality
 	newGroupData.forEach(function(d) {
 	 d.enabled = true;
@@ -67,7 +60,7 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   colorScale.domain(allKeys);
 
   //drawLegend appends to the chartId div and does not require SVG
-  drawLegend(groupData, newGroupData, colorScale);
+  drawLegend(data, groupData, newGroupData, colorScale);
 
   // Create SVG with chart dimensions
   var svg = d3.select(chartId)
@@ -78,7 +71,7 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   .append('g')
   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
   var gSelection = "div"+chartId+">svg>g";
-
+  var maxY = d3.max(groupData, function(d) { return d.total; });
   //  Create tool tip
   var tooltip = d3.select(chartId)
   .append('div')
@@ -121,15 +114,13 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
     var newWidth = xScale.domain().length * mult;  // new width based on xAxis - to be used for y Axis ticks size
 
     var yScale = d3.scaleLinear()
-      .range([height, 0]);
-    var yScale2 = d3.scaleLinear()
         .range([height, 0]);
     var yAxis = d3.axisLeft()
-        .scale(yScale2)
+        .scale(yScale)
         .ticks(5)
         .tickPadding(15)
         .tickSize(-newWidth);
-    yScale2.domain([0, d3.max(groupData, function(d) { return d.total; })]);
+    yScale.domain([0, maxY]);
 
     //  Create groups for x and y axis labels and add text labels
     var xAxisG = d3.select(gSelection).append('g')
@@ -181,10 +172,10 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
 
 
      var hoverRectSelection = "div"+chartId+">svg>g>g.data-rectangles";
-    dataRect.selectAll('.stack>rect').on("mouseover", function(d) {
-              d3StackedBarMouseOver(d, xScale, yScale, yScale2);
+     dataRect.selectAll('.stack>rect').on("mouseover", function(d) {
+              d3StackedBarMouseOver(d);
           })
-      .on("mouseout", function(d) {
+    .on("mouseout", function(d) {
             tooltip.classed('hidden', true);
             // d3.selectAll(hoverRectSelection).remove();
         })
@@ -278,7 +269,7 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
       return filteredData;
      }
 
-  function drawLegend(groupData, jsonData, colorScale){
+  function drawLegend(data, groupData, jsonData, colorScale){
     //  Generate legend based on datapoints
     d3.select("div"+chartId).append("ul").attr("class", "legend float-sm-right");
 
@@ -308,7 +299,7 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
         d.enabled = !d.enabled;
         var filteredKey = d.key;
         groupData.forEach(function(e){
-          if(d.enabled == false){
+          if( d.enabled == false){
             keyValue.push({
               "key": e.key,
               [filteredKey]: e[filteredKey],
@@ -317,32 +308,32 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
             e.total = e.total - e[filteredKey]
             e[filteredKey] = null;
            }
-           else {
+           else if(d.enabled == true) {
              groupData.forEach(function(e){
                keyValue.forEach(function(f){
+                 if(e.key == f.key) {
                e.total = f.total + f[filteredKey]
                e[filteredKey]= f[filteredKey]
+             }
                })
              })
            }
         })
-        console.log(keyValue, groupData);
-        var xx = stack.keys(allKeys)(groupData);
-        // console.log(xx);
+        var xx = d3.stack().keys(allKeys)(groupData);
         var fData= filterEnabled(xx)//(data);
         d3.selectAll("div"+chartId+">svg>g>g.data-rectangles").remove();
         drawStackedBar(xx, width, height);
        });
   }
 
-  function d3StackedBarMouseOver(d, xScale, yScale, yScale2){
+  function d3StackedBarMouseOver(d){
     // show tooltip on mouse hover
     var parentDiv = d3.select(chartWrapper).node().getBoundingClientRect();
     var mouse = d3.mouse(svg.node()).map(function(d) {
         return parseInt(d);
     });
-
-    var tooltipHtml = "<p>"+xLabel+": <b>"+d.data.key+"</b></p>";
+    var yVal = d[1] - d[0];
+    var tooltipHtml = "<p>"+xLabel+": <b>"+d.data.key+"</b></p><p>"+yLabel+": <b>"+yVal+"</b></p>";
     tooltip.html(tooltipHtml)
     .classed('hidden', false);
 
