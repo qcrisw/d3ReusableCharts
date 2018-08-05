@@ -8,7 +8,6 @@
 **/
 
 function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
-
   // Create/Set DOM selectors, margins and chart dimensions
   var margin = { top: 30, right: 35,  bottom: 70, left: 70 };
   var parentDiv = d3.select(chartWrapper).node().getBoundingClientRect();
@@ -184,11 +183,9 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   function unGroupData(data){
       // Flatten or ungroup nested data
       var dataUnGrouped = [];
-
       data.forEach(function(d){
     	var xDate = d.date;
-    	d.date = xDate.replace("00:00:00", "");
-	    //d.date = parseTime(d.date);
+    	if(xDate !=null) d.date = xDate.replace("00:00:00", "");
         for( i in d.values) {
         dataUnGrouped.push({
           "date": d.date,
