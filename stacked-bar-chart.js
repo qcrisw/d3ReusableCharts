@@ -7,7 +7,7 @@
 * The json response from backend contains x vlaue to be null for generating Activity Across time chart. Based on the x value, we reuse the same function to generate all stacked bar charts
 **/
 
-function StackedBarChart2(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
+function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
 
   // Create/Set DOM selectors, margins and chart dimensions
   var margin = { top: 30, right: 35,  bottom: 70, left: 70 };
