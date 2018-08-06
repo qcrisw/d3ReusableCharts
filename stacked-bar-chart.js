@@ -8,6 +8,7 @@
 **/
 
 function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
+
   // Create/Set DOM selectors, margins and chart dimensions
   var margin = { top: 30, right: 35,  bottom: 70, left: 70 };
   var parentDiv = d3.select(chartWrapper).node().getBoundingClientRect();
@@ -183,9 +184,11 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
   function unGroupData(data){
       // Flatten or ungroup nested data
       var dataUnGrouped = [];
+
       data.forEach(function(d){
     	var xDate = d.date;
-    	if(xDate !=null) d.date = xDate.replace("00:00:00", "");
+    	d.date = xDate.replace("00:00:00", "");
+	    //d.date = parseTime(d.date);
         for( i in d.values) {
         dataUnGrouped.push({
           "date": d.date,
@@ -256,16 +259,6 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
     return data;
     }
 
-  function filterEnabled(data) {
-      // Filtering data based on d.enabled (written for legend filtering)
-      var filteredData = [];
-      for(i in data){
-        if(data[i].enabled ==true){
-          filteredData.push(data[i])
-        }}
-      return filteredData;
-     }
-
   function drawLegend(data, groupData, jsonData, colorScale){
     //  Generate legend based on datapoints
     d3.select("div"+chartId).append("ul").attr("class", "legend float-sm-right");
@@ -291,35 +284,33 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
     var keyValue = [];
     legendItem
       .on('click', function(d) {
-        // data Filter - onClick functionality for Legend
+        // data Filter - onClick functionality for Legend based on d.enabled (legend filtering)
         d3.select(this).select("span").classed("legend-active",d3.select(this).select("span").classed("legend-active")? false: true);
         d.enabled = !d.enabled;
         var filteredKey = d.key;
         groupData.forEach(function(e){
           if( d.enabled == false){
             keyValue.push({
+              "index": d.index,
               "key": e.key,
               [filteredKey]: e[filteredKey],
               "total": e.total
               })
-            e.total = e.total - e[filteredKey]
             e[filteredKey] = null;
            }
            else if(d.enabled == true) {
              groupData.forEach(function(e){
                keyValue.forEach(function(f){
-                 if(e.key == f.key) {
-               e.total = f.total + f[filteredKey]
+                 if(d.index == f.index && e.key == f.key) {
                e[filteredKey]= f[filteredKey]
              }
                })
              })
            }
         })
-        var xx = d3.stack().keys(allKeys)(groupData);
-        var fData= filterEnabled(xx)//(data);
+        var fData = d3.stack().keys(allKeys)(groupData);
         d3.selectAll("div"+chartId+">svg>g>g.data-rectangles").remove();
-        drawStackedBar(xx, width, height);
+        drawStackedBar(fData, width, height);
        });
   }
 
