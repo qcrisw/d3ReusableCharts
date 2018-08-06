@@ -187,7 +187,7 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
 
       data.forEach(function(d){
     	var xDate = d.date;
-    	d.date = xDate.replace("00:00:00", "");
+    	if(d.date != null) d.date = xDate.replace("00:00:00", "");
 	    //d.date = parseTime(d.date);
         for( i in d.values) {
         dataUnGrouped.push({
