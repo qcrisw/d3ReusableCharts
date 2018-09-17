@@ -103,15 +103,34 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
 
     // Create Chart Axis scales
     var xScale = d3.scaleBand().rangeRound([0, width]).paddingInner(0.1);
-    var xAxis = d3.axisBottom()
-      .scale(xScale)
-      .ticks(3)
-      .tickPadding(2)
-      .tickSize(-height);
+    var xTickValues = groupData.map(function(d) { return d.key; })
+//    console.log(xTickValues)
+
     xScale.domain(groupData.map(function(d) { return d.key; }));
     var mult = Math.max (1, Math.floor (width / xScale.domain().length));
     xScale.rangeRound([0, (xScale.domain().length * mult)], 0.1, 0);
     var newWidth = xScale.domain().length * mult;  // new width based on xAxis - to be used for y Axis ticks size
+
+    var xAxis = d3.axisBottom()
+      .tickValues(xTickValues)
+      .scale(xScale)
+      .tickPadding(2)
+      .tickSize(-height)
+      .tickFormat(function(d,i){
+    	  var x = new Date(d)
+    	  if(isNaN(d)){
+    		  //d is not number (i.e. it is date)
+    		  if(xScale.domain().length > 10)
+    			  return i==0 || i== Math.ceil(((xScale.domain().length-1))/5) || i== Math.ceil((2* (xScale.domain().length-1))/5) || i== Math.ceil((3* (xScale.domain().length-1))/5) || i== Math.ceil((4* (xScale.domain().length-1))/5) || i == xScale.domain().length-1 ?  d:""
+			  else
+				  return d
+    	  }
+    	  if(isNaN!=x.getTime()) {
+    		  //d is not date/time
+    		  return d
+    	  }
+      })
+
 
     var yScale = d3.scaleLinear()
         .range([height, 0]);
@@ -146,9 +165,10 @@ function StackedBarChart(data,chartWrapper, chartId, xAxisLabel, yAxisLabel){
     xAxisG.call(xAxis)
     	.selectAll(xAxisTickSelection)
     	.attr("dx", "-1.5em")
-      .attr("dy", "1.1em")
+    	.attr("dy", "1.1em")
     	.style("text-anchor", "end")
       .attr("transform", "rotate(-35)");
+
     yAxisG.call(yAxis);
 
     var dataRect = g.append('g')
